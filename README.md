@@ -11,7 +11,7 @@
 ----------
 
 ### 联系我们
-* [Issues&Bugs](https://github.com/leopardooo/easyooo-framework/issues/new)
+* [Issues&Bugs](https://github.com/leopardoooo/easyooo-framework/issues)
 * 欢迎参与项目，只需在Github上fork、pull request即可。
 
 ----------
