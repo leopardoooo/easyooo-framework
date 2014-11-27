@@ -7,4 +7,4 @@ easyooo-framework
 框架说明
 =================
 
-easyooo-framework是一个混合型项目，包含很多有用的模块，但各个模块是可相互独立纯在的，目前没有剥离开，所以您可能在POM文件中会看到一些陌生的SCM URL & Maven Proxy URL，请替换这些货直接删除。
+easyooo-framework是一个混合型项目，包含很多有用的模块，但各个模块是可相互独立纯在的，目前没有剥离开，所以您可能在POM文件中会看到一些陌生的SCM URL & Maven Proxy URL，请替换这些或者直接删除。
