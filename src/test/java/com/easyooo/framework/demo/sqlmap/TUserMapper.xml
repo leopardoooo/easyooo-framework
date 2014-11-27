@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easyooo.framework.demo.mapper.TUserMapper" >
+  <resultMap id="BaseResultMap" type="com.easyooo.framework.demo.domain.TUser" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_date1" property="createDate1" jdbcType="TIMESTAMP" />
+    <result column="create_date2" property="createDate2" jdbcType="TIMESTAMP" />
+    <result column="create_date3" property="createDate3" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_name, status, create_date1, create_date2, create_date3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.easyooo.framework.demo.domain.TUser" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.easyooo.framework.demo.domain.TUser" >
+    insert into t_user (user_id, user_name, status, create_date1, create_date2, create_date3)
+    values (#{userId,jdbcType=BIGINT}, 
+    #{userName,jdbcType=VARCHAR},
+    #{status,jdbcType=VARCHAR},
+    #{createDate1,jdbcType=TIMESTAMP},
+    #{createDate2,jdbcType=TIMESTAMP},
+    #{createDate3,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.easyooo.framework.demo.domain.TUser" >
+    update t_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate1 != null" >
+        create_date1 = #{createDate1,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate2 != null" >
+        create_date2 = #{createDate2,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate3 != null" >
+        create_date3 = #{createDate3,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.easyooo.framework.demo.domain.TUser" >
+    update t_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+    status = #{status,jdbcType=VARCHAR},
+    create_date1 = #{createDate1,jdbcType=VARCHAR},
+    create_date2 = #{createDate2,jdbcType=VARCHAR},
+    create_date3 = #{createDate3,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+  </select>
+  <select id="selectAllWithPage" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+  </select>
+  
+  <select id="selectByUserName" resultMap="BaseResultMap"  parameterType="com.easyooo.framework.demo.domain.TUser">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user 
+    where user_name = #{userName,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="selectByStatus" resultMap="BaseResultMap"  parameterType="com.easyooo.framework.demo.domain.TUser">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user 
+    where status = #{status,jdbcType=VARCHAR}
+  </select>
+</mapper>

@@ -1,0 +1,31 @@
+Copyright © 2014 YAOCHEN Corporation, All Rights Reserved
+
+Cache Framework是一个独立的缓存框架，在Redis上需依赖Jedis，主要包括以下几个核心模块：
+	1、支持Annotation注解配置，包括Key的生成、缓存关系、缓存策略的配置
+	2、支持JVM、Redis的缓存存储
+	3、支持多个分组关系、合并结果集，自动维护级联关系
+	4、与MyBatis、Spring集成
+	5、JVM本地缓存的数据同步 （暂不支持）
+	6、JMX监控本地内存数据（暂不支持）
+	
+
+使用时应注意：
+1、Mapper接口#deleteByPrimaryKey & #selectByPrimaryKey方法
+ 参数必须是MAPPER对应的实体类类型，而不是主键值
+2、在有分组的情况下，Mapper接口定义的方法命名规则：selectBy*Group 
+或 selectAnd*FilterBy*Group，并且方法必须指定@GroupStrategy，
+两个接口方法的区别在于selectAnd*FilterBy*Group支持数据过滤接口
+
+todoList:
+1、Junit Test Cases(Meging的查询)(性能测试)
+2、Merging需要支持多个不同主键的Dto合并，主键可以指定别名
+3、支持多个Merging
+4、针对小表提供了查询所有的API
+5、事务回滚
+	方案一：扩展Spring的事务，通过redis自带的Multi、EXEC，保证使用同一个Connection
+	通过保存所有update、Insert、delete的操作到ThreadLocal，从而实现get同步。
+	方案二：通过日志回滚。
+6、提供操作缓存的API，需要考虑缓存的一致性，从而实现自定义的缓存与Mapper的委托查询
+7、CAS原子性（暂不考虑）
+8、JVM本地缓存的数据同步（Pub/Sub）
+9、JMX监控本地内存数据

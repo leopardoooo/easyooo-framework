@@ -1,0 +1,7 @@
+
+多数据源事务需要注意的是:
+
+如果项目集成了Mybatis，在配置配置MyBatis SqlSessionFactoryBean时，
+需要指定事务管理器的工厂类：
+RoutingManagedTransactionFactory
+RoutingSpringManagedTransaction

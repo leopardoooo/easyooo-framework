@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	default-autowire="byName"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	
+	<context:component-scan base-package="com.easyooo.framework.demo.service" />
+	
+	<!-- enable component scanning and autowire (beware that this does not enable 
+		mapper scanning!) -->
+	<context:property-placeholder location="classpath:data.properties"/>
+	
+	<!-- define the SqlSessionFactory -->
+	<bean id="defaultSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath*:com/easyooo/framework/demo/sqlmap/*.xml" />
+		<property name="plugins">
+			<list>
+				<!-- paging plugins -->
+				<bean class="com.easyooo.framework.support.mybatis.PaginationPlugin"
+					p:dbms="mysql"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 
+		scan for mappers and let them be autowired
+		important: 如果使用了default-autowire="byName"，SqlSessionFactoryBean的Bean Id
+		一定不能叫sqlSessionFactory，因为SqlSessionFactory会通过名称自动装配到MapperScannerConfigurer，
+		这会造成DataSouce的Properties无法替换的情况。
+		@see http://mybatis.github.io/spring/zh/mappers.html#MapperScannerConfigurer
+	-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.easyooo.framework.demo.mapper" />
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		<property name="sqlSessionFactoryBeanName" value="defaultSqlSessionFactory" />
+	</bean>
+	
+	<bean id="shardedJedisClientFactoryBean" class="com.easyooo.framework.support.redis.shard.ShardedJedisClientFactoryBean">
+		<property name="connectionString">
+			<value>192.168.1.206:6379,192.168.1.206:6380</value>
+		</property>
+	</bean>
+
+    <aop:aspectj-autoproxy />
+    <bean id="chainBuilder" class="com.easyooo.framework.cache.impl.CacheChainBuilder">
+    	<property name="redisTemplate">
+    		<bean class="com.easyooo.framework.support.redis.RedisTemplate">
+    			<property name="redisOperation">
+    				<bean class="com.easyooo.framework.support.redis.shard.ShardedJedisOperation">
+    					<property name="shardedJedisFactoryBeanKey">
+    						<value>shardedJedisClientFactoryBean</value>
+    					</property>
+    				</bean>
+    			</property>
+    		</bean>
+    	</property>
+    	<property name="transaction" value="false" />
+    	<property name="updateCommandProducer">
+    		<bean class="com.easyooo.framework.cache.transaction.UpdateCommandProducer">
+    			<property name="mqProducer">
+    				<bean class="com.easyooo.framework.support.rocketmq.ProducerFactoryBean">
+    					<property name="namesrvAddr">
+    						<value>192.168.1.206:9876</value>
+    					</property>
+    					<property name="applicationName">
+    						<value>EASYOOO_FRAMEWORK_TEST</value>
+    					</property>
+    				</bean>
+    			</property>
+    		</bean>
+    	</property>
+    </bean> 
+    <bean class="com.easyooo.framework.cache.CacheAspect">
+		<property name="executor">
+			<bean class="com.easyooo.framework.cache.spring.CacheAspectExecutor"
+				p:chainBuilder-ref="chainBuilder"/>
+		</property>
+	</bean>
+	
+	<bean class="com.easyooo.framework.cache.transaction.ClientIdGenerator" />
+	
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">  
+        <property name="url" value="jdbc:mysql://192.168.1.204:3306/test" />  
+        <property name="username" value="root" />
+        <property name="password" value="123456" /> 
+  
+        <property name="maxActive" value="20" />  
+        <property name="initialSize" value="1" />  
+        <property name="maxWait" value="60000" />  
+        <property name="minIdle" value="1" />  
+  
+        <property name="timeBetweenEvictionRunsMillis" value="3000" />  
+        <property name="minEvictableIdleTimeMillis" value="300000" />  
+        <property name="validationQuery" value="SELECT 'x'" />  
+        <property name="testWhileIdle" value="true" />  
+        <property name="testOnBorrow" value="false" />  
+        <property name="testOnReturn" value="false" />  
+    </bean> 
+	
+	<import resource="/applicationContext-transaction.xml"/>
+	
+</beans>

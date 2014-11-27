@@ -1,0 +1,10 @@
+
+发布到局域网maven代理仓库说明：
+
+1、确保本地所有的问题都已提交，包括pom.xml
+
+2、cmd切换到pom所在目录
+
+3、执行命令：mvn release:prepare，一路回车
+
+4、执行命令：mvn release:perform clean，回车

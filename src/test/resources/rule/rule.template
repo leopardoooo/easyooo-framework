@@ -1,0 +1,15 @@
+package rule.output;
+
+import com.easyooo.framework.rule.RuleContext;
+import com.easyooo.framework.rule.RuleException;
+import com.easyooo.framework.rule.RuleExecutor;
+
+public class {className} implements RuleExecutor {
+
+	@Override
+	public Object eval(RuleContext {globalPropertyName}, RuleContext {localPropertyName})
+			throws RuleException {
+		{methodBody}
+	}
+ 
+}
