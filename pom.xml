@@ -215,9 +215,10 @@
 		</dependency>
 	</dependencies>
 	
-	<scm>
-		<connection>scm:svn:https://svn.ycsoft.com:8443/svn/framework/trunk/</connection>
-    	<developerConnection>scm:svn:https://svn.ycsoft.com:8443/svn/framework/trunk/</developerConnection>
+  	<scm>
+	    <connection>scm:git:git@github.com:leopardoooo/easyooo-framework.git</connection>
+	    <url>scm:git:git@github.com:leopardoooo/easyooo-framework.git</url>
+	    <developerConnection>scm:git:git@github.com:leopardoooo/easyooo-framework.git</developerConnection> 
   	</scm>
 	
 	<!-- Distribution of building to the remote repository -->
