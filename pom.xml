@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.easyooo</groupId>
 	<artifactId>easyooo-framework</artifactId>
-	<version>1.0.10-SNAPSHOT</version>
+	<version>1.0.11-SNAPSHOT</version>
 	<name>easyooo-framework</name>
 	
 	<licenses>
@@ -216,11 +216,9 @@
 	</dependencies>
 	
   	<scm>
-	    <connection>scm:git:git@github.com:leopardoooo/easyooo-framework.git</connection>
-	    <url>scm:git:git@github.com:leopardoooo/easyooo-framework.git</url>
-	    <developerConnection>scm:git:git@github.com:leopardoooo/easyooo-framework.git</developerConnection> 
-  	  <tag>HEAD</tag>
-  </scm>
+		<connection>scm:git:git@github.com:leopardoooo/easyooo-framework.git</connection>
+    	<developerConnection>scm:git:git@github.com:leopardoooo/easyooo-framework.git</developerConnection>
+  	</scm>
 	
 	<!-- Distribution of building to the remote repository -->
 	<distributionManagement>
