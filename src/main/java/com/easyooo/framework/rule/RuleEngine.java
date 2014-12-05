@@ -45,4 +45,13 @@ public interface RuleEngine {
 	 */
 	<T> T eval(Rule rule, Object... dataMap)throws RuleException;
 	
+	
+	/**
+	 * 验证规则的语法
+	 * @param rule
+	 * @return
+	 * @throws RuleException
+	 */
+	boolean verifySyntax(Rule rule)throws RuleException;
+	
 }

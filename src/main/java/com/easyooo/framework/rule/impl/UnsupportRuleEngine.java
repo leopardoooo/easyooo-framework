@@ -29,4 +29,9 @@ public class UnsupportRuleEngine implements RuleEngine {
 	private <T> T throwe()throws RuleException{
 		throw new RuleException("The engine does not support!");
 	}
+
+	@Override
+	public boolean verifySyntax(Rule rule) throws RuleException {
+		return throwe();
+	}
 }

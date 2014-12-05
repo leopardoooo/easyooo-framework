@@ -69,4 +69,9 @@ public class JavaScriptRuleEngine implements RuleEngine {
 			throw new RuleException("Execute the script error", e);
 		}
 	}
+
+	@Override
+	public boolean verifySyntax(Rule rule) throws RuleException {
+		throw new UnsupportedOperationException();
+	}
 }

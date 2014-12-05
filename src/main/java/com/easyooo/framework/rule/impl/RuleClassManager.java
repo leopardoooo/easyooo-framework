@@ -147,6 +147,34 @@ public class RuleClassManager {
 		return re;
 	}
 	
+	/**
+	 * 验证语法是否通过
+	 * 
+	 * @param rule
+	 * @return
+	 * @throws RuleException
+	 */
+	public boolean verifyRuleSyntax(Rule rule)throws RuleException{
+		ScriptWriter sw = new ScriptWriter(rule);
+		try {
+			// 可能不存在，忽略该异常
+			sw.deleteClass();
+		} catch (IOException ig) {
+		}
+		
+		// 没有异常意味着编译通过
+		try{
+			loadRuleInstance(rule);
+		}finally{
+			try {
+				sw.deleteClass();
+			} catch (IOException ig) {
+			}
+		}
+		
+		return true;
+	}
+	
 	private class CacheValue{
 		public Rule rule;
 		public RuleExecutor executor;

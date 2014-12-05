@@ -42,5 +42,10 @@ public class AroundRuleEngine implements RuleEngine {
 	public void setContext(RuleContext context) {
 		delegate.setContext(context);
 	}
+
+	@Override
+	public boolean verifySyntax(Rule rule) throws RuleException {
+		return delegate.verifySyntax(rule);
+	}
 	
 }

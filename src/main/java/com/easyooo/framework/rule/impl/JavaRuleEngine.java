@@ -51,4 +51,9 @@ public class JavaRuleEngine implements RuleEngine {
 		this.ruleContext = context;
 	}
 
+	@Override
+	public boolean verifySyntax(Rule rule) throws RuleException {
+		return RuleClassManager.getInstance().verifyRuleSyntax(rule);
+	}
+
 }

@@ -41,6 +41,12 @@ public class RuleEngineProxy{
 		return engine.eval(rule, dataMap);
 	}
 	
+	public boolean verifySyntax() throws RuleException {
+		RuleEngine engine = newEngineImpl(rule.getLanguage());
+		engine.setContext(context);
+		return engine.verifySyntax(rule);
+	}
+	
 	private RuleEngine newEngineImpl(Language lang){
 		RuleEngine delegate = null;
 		switch (lang) {
