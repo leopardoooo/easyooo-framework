@@ -7,7 +7,7 @@
 	<name>easyooo-framework</name>
 	
 	<licenses>
-		<license> 
+		<license>
 			<name>${license.name}</name>
 			<distribution>empty</distribution>
 			<comments> easyooo all rights reserved, don't 
