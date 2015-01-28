@@ -220,6 +220,16 @@ public abstract class AbstractRedisOperation implements RedisOperation{
 			}
 		});
 	}
+	
+	@Override
+	public Long hincrBy(final String key,final String field, final Long increment) {
+		return exec(new RedisCallback<Long>() {
+			@Override
+			public Long doCallback(JedisCommands jedis) {
+				return jedis.hincrBy(key, field, increment);
+			}
+		});
+	}
 
 	@Override
 	public List<String> hmget(final String key, final String... fields) {

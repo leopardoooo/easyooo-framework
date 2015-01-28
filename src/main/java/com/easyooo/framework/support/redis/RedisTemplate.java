@@ -108,6 +108,11 @@ public class RedisTemplate implements InitializingBean, RedisOperation{
 	}
 
 	@Override
+	public Long hincrBy(String key, String field, Long increment) {
+		return redisOperation.hincrBy(key, field, increment);
+	}
+
+	@Override
 	public List<String> hmget(String key, String... fields) {
 		return redisOperation.hmget(key, fields);
 	}
