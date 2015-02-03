@@ -218,7 +218,7 @@
   	<scm>
 		<connection>scm:git:git@github.com:leopardoooo/easyooo-framework.git</connection>
     	<developerConnection>scm:git:git@github.com:leopardoooo/easyooo-framework.git</developerConnection>
-  	  <tag>HEAD</tag>
+  	  <tag>easyooo-framework-1.0.14</tag>
   </scm>
 	
 	<!-- Distribution of building to the remote repository -->
