@@ -156,6 +156,11 @@ public class RedisTemplate implements InitializingBean, RedisOperation{
 	public Long srem(String key, String... values) {
 		return redisOperation.srem(key, values);
 	}
+	
+	@Override
+	public List<String> srandmember(String key, Integer count) {
+		return redisOperation.srandmember(key, count);
+	}
 
 	@Override
 	public Long expire(String key, Integer seconds) {
@@ -273,4 +278,5 @@ public class RedisTemplate implements InitializingBean, RedisOperation{
 	public String rpop(String key) {
 		return redisOperation.rpop(key);
 	}
+
 }

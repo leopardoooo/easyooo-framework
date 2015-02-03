@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.easyooo</groupId>
 	<artifactId>easyooo-framework</artifactId>
-	<version>1.0.13-SNAPSHOT</version>
+	<version>1.0.14-SNAPSHOT</version>
 	<name>easyooo-framework</name>
 	
 	<licenses>
@@ -40,7 +40,7 @@
 		
 		<!-- The third party framework -->
 		<commons-pool2-version>2.1</commons-pool2-version>
-		<redis-clients-version>2.4.0</redis-clients-version>
+		<redis-clients-version>2.6.2</redis-clients-version>
 		<curator-version>2.4.0</curator-version>
 		<rhino-version>1.7R4</rhino-version>
 		<groovy-version>2.2.1</groovy-version>

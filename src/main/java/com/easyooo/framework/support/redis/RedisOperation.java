@@ -254,6 +254,15 @@ public interface RedisOperation {
 	Long srem(String key, String ...values);
 	
 	
+	/**
+	 * 如果命令执行时，只提供了 key 参数，那么返回集合中的一个随机元素。
+	 * 从 Redis 2.6 版本开始， SRANDMEMBER 命令接受可选的 count 参数：
+	 * 如果 count 为正数，且小于集合基数，那么命令返回一个包含 count 个元素的数组，数组中的元素各不相同。如果 count 大于等于集合基数，那么返回整个集合。
+	 * 如果 count 为负数，那么命令返回一个数组，数组中的元素可能会重复出现多次，而数组的长度为 count 的绝对值。
+	 * SRANDMEMBER 则仅仅返回随机元素，而不对集合进行任何改动。
+	 */
+	List<String> srandmember(String key, Integer count);
+	
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// zadd command
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

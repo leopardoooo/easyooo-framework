@@ -320,6 +320,16 @@ public abstract class AbstractRedisOperation implements RedisOperation{
 			}
 		});
 	}
+	
+	@Override
+	public List<String> srandmember(final String key, final Integer count) {
+		return exec(new RedisCallback<List<String>>() {
+			@Override
+			public List<String> doCallback(JedisCommands jedis) {
+				return jedis.srandmember(key, count);
+			}
+		});
+	}
 
 	@Override
 	public Long zadd(final String key, final Double score, final String member){
