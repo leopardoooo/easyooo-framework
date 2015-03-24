@@ -63,6 +63,25 @@ public abstract class ListUtil {
 	}
 	
 	/**
+	 * 将不同元素的集合按主键值转换成Map返回,
+	 * list元素应保证唯一性，否则前面的会被覆盖
+	 * 
+	 * @return
+	 */
+	public static <K, T> Map<K, T> groupingToEntry(List<T> src, Grouping<K, T> group){
+		Map<K, T> map = new LinkedHashMap<>();
+		if(src == null || src.size() == 0){
+			return map;
+		}
+		for (T t : src) {
+			K k = group.getGroupingKey(t);
+			map.put(k, t);
+		}
+		
+		return map;
+	}
+	
+	/**
 	 * 获取第一个值
 	 * @param list
 	 * @return

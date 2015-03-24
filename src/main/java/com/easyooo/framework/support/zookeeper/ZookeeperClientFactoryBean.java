@@ -17,6 +17,11 @@ import org.springframework.beans.factory.InitializingBean;
  * Zookeeper client factory bean，它是单实例的，
  * 意味着程序只有一个zk client的实例
  * 
+ * <p>
+ * 支持VM参数配置zk连接字符串如：-DzkConnectionString=192.168.1.1:2181
+ * 或者SPring配置文件注入的方式
+ * </p>
+ * 
  * @author Killer
  */
 public class ZookeeperClientFactoryBean implements
@@ -45,6 +50,8 @@ public class ZookeeperClientFactoryBean implements
 
 	@Override
 	public void afterPropertiesSet() {
+		// 优先系统参数中的ZK配置，如果VM启动参数中没有该参数，则取Spring注入的属性
+		connectionString = System.getProperty("zkConnectionString", connectionString);
 		notNull(connectionString, "Property 'connectionString' is required");
 		
 		this.zkClient = createZookeeperInstance();
