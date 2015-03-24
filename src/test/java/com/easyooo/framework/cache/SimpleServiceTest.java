@@ -26,13 +26,13 @@ public class SimpleServiceTest {
 	private SimpleService simpleService;
 	
 	@Test
-	@Ignore
 	public void testInsert(){
-		long userId = 1000L;
+		long userId = 1002L;
 		simpleService.insertUser(userId);
 	}
 	
 	@Test
+	@Ignore
 	public void testDelete(){
 		assertThat(simpleService.deleteUser(1000L), is(true));
 	}

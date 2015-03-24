@@ -50,7 +50,7 @@
 	
 	<bean id="shardedJedisClientFactoryBean" class="com.easyooo.framework.support.redis.shard.ShardedJedisClientFactoryBean">
 		<property name="connectionString">
-			<value>192.168.1.206:6379,192.168.1.206:6380</value>
+			<value>192.168.1.206:6379</value>
 		</property>
 	</bean>
 

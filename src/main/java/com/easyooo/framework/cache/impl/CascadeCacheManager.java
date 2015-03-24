@@ -163,7 +163,7 @@ public class CascadeCacheManager extends CacheManagerImpl{
 	
 	private boolean existGroup(ICache cache, String groupKey)throws CacheException{
 		Set<String> mems = cache.getMembers(groupKey);
-		return mems == null ? false : true; 
+		return mems == null || mems.size() == 0 ? false : true; 
 	}
 	
 	private Map<String, List<GroupBean>> getGroups(Object bean)throws CacheException{

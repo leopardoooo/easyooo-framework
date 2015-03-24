@@ -1,7 +1,5 @@
 package com.easyooo.framework.demo.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +22,8 @@ public class SimpleService {
 
 	public void insertUser(Long userId) {
 
-		List<TUser> users = tUserMapper.selectAll();
-		System.out.println(users);
+		//List<TUser> users = tUserMapper.selectAll();
+		//System.out.println(users);
 
 		TUserDetail detail = new TUserDetail();
 		detail.setUserId(userId);
@@ -35,7 +33,7 @@ public class SimpleService {
 		tUserDetailMapper.insert(detail);
 
 		TUser user = new TUser(userId);
-		user.setStatus("OK");
+		user.setStatus("UNOK");
 		user.setUserName("killer");
 		tUserMapper.insert(user);
 	}
