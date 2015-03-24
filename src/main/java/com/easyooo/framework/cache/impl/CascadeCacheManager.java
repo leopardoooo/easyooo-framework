@@ -9,6 +9,7 @@ import static com.easyooo.framework.cache.impl.CascadeOperation.getUpdateOps;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -139,15 +140,18 @@ public class CascadeCacheManager extends CacheManagerImpl{
 			try{
 				String group = op.getGroup();
 				switch (op.getOperation()) {
-				case INSERT:
-					cache.addMembers(buildGroupCacheKey(newBean, group), cacheKey);
-					break;
 				case DELETE:
 					cache.delMembers(buildGroupCacheKey(oldBean, group), cacheKey);
 					break;
 				case DELETE_INSERT:
 					cache.delMembers(buildGroupCacheKey(oldBean, group), cacheKey);
-					cache.addMembers(buildGroupCacheKey(newBean, group), cacheKey);
+					// 执行完不跳出，继续执行INSERT CASE
+				case INSERT:
+					String groupKey = buildGroupCacheKey(newBean, group);
+					if(existGroup(cache, groupKey)){
+						cache.addMembers(groupKey, cacheKey);
+					}
+					break;
 				default:
 					break;
 				}
@@ -155,6 +159,11 @@ public class CascadeCacheManager extends CacheManagerImpl{
 				logger.error("Cascade operation failed", e);
 			}
 		}
+	}
+	
+	private boolean existGroup(ICache cache, String groupKey)throws CacheException{
+		Set<String> mems = cache.getMembers(groupKey);
+		return mems == null ? false : true; 
 	}
 	
 	private Map<String, List<GroupBean>> getGroups(Object bean)throws CacheException{
