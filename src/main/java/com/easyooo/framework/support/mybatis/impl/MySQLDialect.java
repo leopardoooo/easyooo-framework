@@ -18,7 +18,7 @@ public class MySQLDialect implements Dialect {
 
 	final String COUNTING_SQL_TPL = "SELECT COUNT(1) FROM";
 	
-	final Pattern COUNTING_PATTERN = Pattern.compile("select.[\\s\\S]*?from", Pattern.CASE_INSENSITIVE);
+	final Pattern COUNTING_PATTERN = Pattern.compile("select[\\s\\S]*?from", Pattern.CASE_INSENSITIVE);
 
 	@Override
 	public String getPagingSQL(String sql) {
