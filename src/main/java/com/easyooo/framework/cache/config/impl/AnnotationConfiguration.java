@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.easyooo.framework.cache.CacheLevel;
 import com.easyooo.framework.cache.ConfigurationException;
 import com.easyooo.framework.cache.annotations.Cache;
 import com.easyooo.framework.cache.annotations.Group;
@@ -235,11 +234,7 @@ public class AnnotationConfiguration extends AbstractConfiguration{
 			}
 			target.setXbeanClass(type);
 			
-			// TODO 
-			// 手工修改数据造成JVM数据不一致的情况，
-			// 因此这里暂时将JVM标志视为REDIS级别
-			// target.setLevel(cache.level());
-			target.setLevel(CacheLevel.REDIS);
+			target.setLevel(cache.level());
 			target.setKeyBuilder(cache.keyBuilder());
 			target.setPrefix(prefix);
 		}
