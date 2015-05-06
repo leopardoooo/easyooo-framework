@@ -1,30 +1,67 @@
 package com.easyooo.framework.support.mybatis.util;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.ParameterMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSON;
+import com.easyooo.framework.common.util.CglibUtil;
 
 /**
  * Jdbc Utils
- *  TODO 临时修改
  * @author Killer
  */
 public final class JdbcUtil {
 	
 	Logger logger = LoggerFactory.getLogger(JdbcUtil.class);
 	
-	public Integer counting(Connection conn, String sql, ParameterSetter setter, Object params)
+	private SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	private String buildStatmentSql(String sql, BoundSql boundSql){
+		List<ParameterMapping> mappings = boundSql.getParameterMappings();
+		if(mappings == null){
+			return sql;
+		}
+		Object paramObject = boundSql.getParameterObject();
+		for (ParameterMapping pm : mappings) {
+			String propertyName = pm.getProperty();
+			Object value = null;
+			if (boundSql.hasAdditionalParameter(propertyName)) {
+				value = boundSql.getAdditionalParameter(propertyName);
+			}else if(paramObject != null){
+				value = CglibUtil.getPropertyValue(paramObject, propertyName);
+			}
+			
+			String phString = "";
+			if(value != null ){
+				if(value instanceof String){
+					phString ="'" + value.toString() +"'";
+				}else if(value instanceof Date){
+					phString ="'" +  SDF.format((Date)value) +"'";
+				}else{
+					phString = value.toString();
+				}
+			}else{
+				phString = null;
+			}
+			sql = sql.replaceFirst("?", phString);
+		}
+		return sql;
+	}
+	
+	public Integer counting(Connection conn, String sql, BoundSql boundSql)
 			throws SQLException {
-		List<Object[]> dataList = query(conn, sql, setter, params);
+		List<Object[]> dataList = query(conn, buildStatmentSql(sql, boundSql));
 		if(dataList != null && dataList.size() > 0){
 			// Extract the first row and first column data 
 			Object[] rowData = dataList.get(0);
@@ -35,36 +72,26 @@ public final class JdbcUtil {
 		return null;
 	}
 
-	public List<Object[]> query(Connection conn, String sql,
-			ParameterSetter setter, Object params) throws SQLException{
+	public List<Object[]> query(Connection conn, String sql) throws SQLException{
 		if(conn.isClosed()){
 			return null;
 		}
 		
-		PreparedStatement ps = null;
+		Statement state = null;
 		ResultSet rs = null;
 		
-		Long start = System.currentTimeMillis();;
 		try{
-			ps = conn.prepareStatement(sql);
-			setter.setParameters(ps);
-			rs = ps.executeQuery();
-			ResultSetMetaData rsmd = ps.getMetaData();
+			state = conn.createStatement();
+			rs = state.executeQuery(sql);
+			ResultSetMetaData rsmd = rs.getMetaData();
 			return extractData(rsmd, rs);
 		}finally{
-			// 如果查询结果超过4秒就输出错误日志
-			if(System.currentTimeMillis() - start >= 4000){
-				StringBuffer sb = new StringBuffer();
-				sb.append("ps：" + ps + "\n");
-				sb.append("sql：" + sql + ",params: "+ JSON.toJSONString(params));
-				logger.error(sb.toString());
-			}
 			if(rs != null){
 				rs.close();
 			}
 			
-			if(ps != null){
-				ps.close();
+			if(state != null){
+				state.close();
 			}
 		}
 	}
