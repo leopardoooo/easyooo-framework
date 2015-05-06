@@ -5,18 +5,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.SQLTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.JSON;
+
 /**
  * Jdbc Utils
+ *  TODO 临时修改
  * @author Killer
  */
 public final class JdbcUtil {
 	
-	public Integer counting(Connection conn, String sql, ParameterSetter setter)
+	Logger logger = LoggerFactory.getLogger(JdbcUtil.class);
+	
+	public Integer counting(Connection conn, String sql, ParameterSetter setter, Object params)
 			throws SQLException {
-		List<Object[]> dataList = query(conn, sql, setter);
+		List<Object[]> dataList = query(conn, sql, setter, params);
 		if(dataList != null && dataList.size() > 0){
 			// Extract the first row and first column data 
 			Object[] rowData = dataList.get(0);
@@ -28,7 +37,7 @@ public final class JdbcUtil {
 	}
 
 	public List<Object[]> query(Connection conn, String sql,
-			ParameterSetter setter) throws SQLException{
+			ParameterSetter setter, Object params) throws SQLException{
 		if(conn.isClosed()){
 			return null;
 		}
@@ -39,9 +48,15 @@ public final class JdbcUtil {
 		try{
 			ps = conn.prepareStatement(sql);
 			setter.setParameters(ps);
+			// 设置超时时间为5秒
+			ps.setQueryTimeout(5);
 			rs = ps.executeQuery();
 			ResultSetMetaData rsmd = ps.getMetaData();
 			return extractData(rsmd, rs);
+		}catch(SQLTimeoutException e){
+			logger.error("query timeout", e);
+			logger.error("sql:{}, params:{}", sql, JSON.toJSONString(params));
+			return null;
 		}finally{
 			
 			if(rs != null){

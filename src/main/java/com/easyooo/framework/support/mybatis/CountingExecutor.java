@@ -47,7 +47,8 @@ public class CountingExecutor {
 					parameterHandler.setParameters(ps);
 				}
 			};
-			return new JdbcUtil().counting(conn, countingSql, setter);
+			// TODO 临时修改
+			return new JdbcUtil().counting(conn, countingSql, setter, boundSql.getParameterObject());
 		}finally{
 			JdbcUtil.close(conn);
 		}
