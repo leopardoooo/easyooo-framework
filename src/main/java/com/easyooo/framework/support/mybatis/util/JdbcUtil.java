@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.SQLTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,20 +44,21 @@ public final class JdbcUtil {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
+		Long start = System.currentTimeMillis();;
 		try{
 			ps = conn.prepareStatement(sql);
 			setter.setParameters(ps);
-			// 设置超时时间为5秒
-			ps.setQueryTimeout(5);
 			rs = ps.executeQuery();
 			ResultSetMetaData rsmd = ps.getMetaData();
 			return extractData(rsmd, rs);
-		}catch(SQLTimeoutException e){
-			logger.error("query timeout", e);
-			logger.error("sql:{}, params:{}", sql, JSON.toJSONString(params));
-			return null;
 		}finally{
-			
+			// 如果查询结果超过4秒就输出错误日志
+			if(System.currentTimeMillis() - start >= 4000){
+				StringBuffer sb = new StringBuffer();
+				sb.append("ps：" + ps + "\n");
+				sb.append("sql：" + sql + ",params: "+ JSON.toJSONString(params));
+				logger.error(sb.toString());
+			}
 			if(rs != null){
 				rs.close();
 			}
