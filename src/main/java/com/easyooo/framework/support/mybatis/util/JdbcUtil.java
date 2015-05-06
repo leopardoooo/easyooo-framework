@@ -54,7 +54,7 @@ public final class JdbcUtil {
 			}else{
 				phString = null;
 			}
-			sql = sql.replaceFirst("?", phString);
+			sql = sql.replaceFirst("\\?", phString);
 		}
 		return sql;
 	}
