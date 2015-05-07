@@ -55,8 +55,8 @@ public final class JdbcUtil {
 				}
 			}else{
 				logger.error(
-						"property value may be losted. sql: {}, currentPropertyName: {}, params: {}",
-						sql, propertyName, JSON.toJSONString(paramObject));
+						"property value may be losted. sql: {}, currentPropertyName: {}, boundSql: {}",
+						sql, propertyName,JSON.toJSONString(boundSql));
 				phString = null;
 			}
 			sql = sql.replaceFirst("\\?", phString);
