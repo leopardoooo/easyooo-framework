@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.ParameterMapping;
@@ -38,7 +39,11 @@ public final class JdbcUtil {
 			String propertyName = pm.getProperty();
 			Object value = null;
 			if(paramObject != null){
-				value = CglibUtil.getPropertyValue(paramObject, propertyName);
+				if(paramObject instanceof Map<?, ?>){
+					value = ((Map<?,?>)paramObject).get(propertyName);
+				}else{
+					value = CglibUtil.getPropertyValue(paramObject, propertyName);
+				}
 			}
 			if (value == null && boundSql.hasAdditionalParameter(propertyName)) {
 				value = boundSql.getAdditionalParameter(propertyName);

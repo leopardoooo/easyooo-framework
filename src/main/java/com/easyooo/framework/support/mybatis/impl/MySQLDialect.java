@@ -30,7 +30,7 @@ public class MySQLDialect implements Dialect {
 	@Override
 	public String getCountingSQL(String sql) {
 		if(COUNT_SUB_PATTERN.matcher(sql).find()){
-			return String.format(COUNTING_SUB_SQL_TPL, sql);
+			return MessageFormat.format(COUNTING_SUB_SQL_TPL, sql);
 		}else{
 			StringBuffer buffer = new StringBuffer();
 			Matcher matcher = COUNTING_PATTERN.matcher(sql);
