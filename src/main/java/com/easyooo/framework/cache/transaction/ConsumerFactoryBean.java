@@ -22,7 +22,7 @@ public class ConsumerFactoryBean extends DefaultMQPushConsumer implements Initia
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		setConsumerGroup(applicationName);
-		setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+		setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
 		setConsumeMessageBatchMaxSize(1);
 		
 		setMessageModel(MessageModel.BROADCASTING);
