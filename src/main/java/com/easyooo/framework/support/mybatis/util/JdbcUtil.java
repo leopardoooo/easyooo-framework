@@ -37,10 +37,11 @@ public final class JdbcUtil {
 		for (ParameterMapping pm : mappings) {
 			String propertyName = pm.getProperty();
 			Object value = null;
-			if (boundSql.hasAdditionalParameter(propertyName)) {
-				value = boundSql.getAdditionalParameter(propertyName);
-			}else if(paramObject != null){
+			if(paramObject != null){
 				value = CglibUtil.getPropertyValue(paramObject, propertyName);
+			}
+			if (value == null && boundSql.hasAdditionalParameter(propertyName)) {
+				value = boundSql.getAdditionalParameter(propertyName);
 			}
 			
 			String phString = "";
@@ -53,7 +54,7 @@ public final class JdbcUtil {
 					phString = value.toString();
 				}
 			}else{
-				logger.warn(
+				logger.error(
 						"property value may be losted. sql: {}, currentPropertyName: {}, params: {}",
 						sql, propertyName, JSON.toJSONString(paramObject));
 				phString = null;
