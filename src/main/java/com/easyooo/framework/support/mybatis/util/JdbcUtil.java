@@ -15,6 +15,7 @@ import org.apache.ibatis.mapping.ParameterMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
 import com.easyooo.framework.common.util.CglibUtil;
 
 /**
@@ -52,6 +53,9 @@ public final class JdbcUtil {
 					phString = value.toString();
 				}
 			}else{
+				logger.warn(
+						"property value may be losted. sql: {}, currentPropertyName: {}, params: {}",
+						sql, propertyName, JSON.toJSONString(paramObject));
 				phString = null;
 			}
 			sql = sql.replaceFirst("\\?", phString);
