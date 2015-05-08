@@ -33,10 +33,22 @@ public class CountingExecutor {
 		try{
 			Environment evn = ms.getConfiguration().getEnvironment();
 			conn = evn.getDataSource().getConnection();
-			return new JdbcUtil().counting(conn, countingSql, boundSql);
+			return new JdbcUtil().counting(conn, countingSql, this);
 		}finally{
 			JdbcUtil.close(conn);
 		}
+	}
+
+	public MappedStatement getMs() {
+		return ms;
+	}
+
+	public Dialect getDialect() {
+		return dialect;
+	}
+
+	public BoundSql getBoundSql() {
+		return boundSql;
 	}
 
 }

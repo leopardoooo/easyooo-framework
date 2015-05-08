@@ -13,11 +13,13 @@ import java.util.Map;
 
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.ParameterMapping;
+import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.easyooo.framework.common.util.CglibUtil;
+import com.easyooo.framework.support.mybatis.CountingExecutor;
 
 /**
  * Jdbc Utils
@@ -29,19 +31,23 @@ public final class JdbcUtil {
 	
 	private SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	private String buildStatmentSql(String sql, BoundSql boundSql){
+	private String buildStatmentSql(String sql, CountingExecutor ce){
+		BoundSql boundSql = ce.getBoundSql();
 		List<ParameterMapping> mappings = boundSql.getParameterMappings();
 		if(mappings == null){
 			return sql;
 		}
 		Object paramObject = boundSql.getParameterObject();
+		TypeHandlerRegistry typeHandlerRegistry = ce.getMs().getConfiguration().getTypeHandlerRegistry();
 		for (ParameterMapping pm : mappings) {
 			String propertyName = pm.getProperty();
 			Object value = null;
 			if(paramObject != null){
 				if(paramObject instanceof Map<?, ?>){
 					value = ((Map<?,?>)paramObject).get(propertyName);
-				}else{
+				} else if (typeHandlerRegistry.hasTypeHandler(paramObject.getClass())) {
+		            value = paramObject;
+		        }else{
 					value = CglibUtil.getPropertyValue(paramObject, propertyName);
 				}
 			}
@@ -69,9 +75,9 @@ public final class JdbcUtil {
 		return sql;
 	}
 	
-	public Integer counting(Connection conn, String sql, BoundSql boundSql)
+	public Integer counting(Connection conn, String sql, CountingExecutor ce)
 			throws SQLException {
-		List<Object[]> dataList = query(conn, buildStatmentSql(sql, boundSql));
+		List<Object[]> dataList = query(conn, buildStatmentSql(sql, ce));
 		if(dataList != null && dataList.size() > 0){
 			// Extract the first row and first column data 
 			Object[] rowData = dataList.get(0);
