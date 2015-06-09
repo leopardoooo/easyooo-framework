@@ -212,6 +212,26 @@ public abstract class AbstractRedisOperation implements RedisOperation{
 	}
 	
 	@Override
+	public String ltrim(final String key, final Long start, final Long end) {
+		return exec(new RedisCallback<String>() {
+			@Override
+			public String doCallback(JedisCommands jedis) {
+				return jedis.ltrim(key, start, end);
+			}
+		});
+	}
+
+	@Override
+	public Long llen(final String key) {
+		return exec(new RedisCallback<Long>() {
+			@Override
+			public Long doCallback(JedisCommands jedis) {
+				return jedis.llen(key);
+			}
+		});
+	}
+	
+	@Override
 	public String hmset(final String key, final Map<String, String> fieldValues) {
 		return exec(new RedisCallback<String>() {
 			@Override

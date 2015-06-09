@@ -167,6 +167,21 @@ public interface RedisOperation {
 	 */
 	String lset(String key, Long index, String value);
 	
+	/**
+	 * 对一个列表进行修剪(trim)，就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。
+	 * 举个例子，执行命令 LTRIM list 0 2 ，表示只保留列表 list 的前三个元素，其余元素全部删除。
+	 * 下标(index)参数 start 和 stop 都以 0 为底，也就是说，以 0 表示列表的第一个元素，以 1 表示列表的第二个元素，以此类推。
+	 * 你也可以使用负数下标，以 -1 表示列表的最后一个元素， -2 表示列表的倒数第二个元素，以此类推。
+	 * 当 key 不是列表类型时，返回一个错误
+	 */
+	String ltrim(String key, Long start, Long stop);
+	
+	/**
+	 * 返回列表 key 的长度。
+	 * 如果 key 不存在，则 key 被解释为一个空列表，返回 0 .
+	 * 如果 key 不是列表类型，返回一个错误。
+	 */
+	Long llen(String key);
 	
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// hash command

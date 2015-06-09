@@ -278,5 +278,14 @@ public class RedisTemplate implements InitializingBean, RedisOperation{
 	public String rpop(String key) {
 		return redisOperation.rpop(key);
 	}
+	
+	@Override
+	public String ltrim(String key, Long start, Long stop) {
+		return redisOperation.ltrim(key, start, stop);
+	}
 
+	@Override
+	public Long llen(String key) {
+		return redisOperation.llen(key);
+	}
 }
