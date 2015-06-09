@@ -118,7 +118,7 @@ public class JedisApiTest {
 		            new JedisShardInfo("localhost",6379));
 
 	    ShardedJedis sharding = new ShardedJedis(shards);
-
+	    
 	    long start = System.currentTimeMillis();
 	    for (int i = 0; i < COUNTER; i++) {
 	        String result = sharding.set("sn" + i, "n" + i);
@@ -127,6 +127,7 @@ public class JedisApiTest {
 	    System.out.println("Simple@Sharing SET: " + ((end - start)/1000.0) + " seconds");
 
 	    sharding.disconnect();
+	    sharding.close();
 	}
 	
 	/**
@@ -154,6 +155,7 @@ public class JedisApiTest {
 	    System.out.println("Pipelined@Sharing SET: " + ((end - start)/1000.0) + " seconds");
 
 	    sharding.disconnect();
+	    sharding.close();
 	}
 	
 	/**
