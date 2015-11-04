@@ -32,6 +32,8 @@ public class TUser implements ShardingStrategy{
 	private Date createDate2;
 	private Date createDate3;
 	
+	public TUser(){}
+	
 	public TUser(Long userId){
 		this.userId = userId;
 	}

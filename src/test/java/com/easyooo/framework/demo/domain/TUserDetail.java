@@ -24,6 +24,8 @@ public class TUserDetail {
 
     private Integer tel;
     
+    public TUserDetail(){}
+    
     public TUserDetail(Long userId){
     	this.userId = userId;
     }
