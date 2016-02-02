@@ -3,15 +3,13 @@
  */
 package com.easyooo.framework.demo.domain;
 
+import lombok.AllArgsConstructor;
+
 import com.easyooo.framework.cache.annotations.Cache;
 import com.easyooo.framework.cache.annotations.KeyProperty;
 import com.easyooo.framework.cache.annotations.MiniTable;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 @AllArgsConstructor
-@NoArgsConstructor
 @Cache
 @MiniTable
 public class TUserDetail {

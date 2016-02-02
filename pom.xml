@@ -225,11 +225,11 @@
 	<distributionManagement>
 	    <repository>    
 	      <id>nexus-releases</id> 
-	      <url>http://nexus.ycsoft.com:9080/nexus/content/repositories/releases/</url>    
+	      <url>http://nexus.julun.com:9080/nexus/content/repositories/releases/</url>    
 	    </repository>    
 	    <snapshotRepository>    
 	      <id>nexus-snapshots</id>
-	      <url>http://nexus.ycsoft.com:9080/nexus/content/repositories/snapshots/</url>    
+	      <url>http://nexus.julun.com:9080/nexus/content/repositories/snapshots/</url>    
 	    </snapshotRepository>
 	</distributionManagement>
 	

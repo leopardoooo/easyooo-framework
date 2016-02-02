@@ -57,7 +57,7 @@ public class PaginationPlugin implements Interceptor, InitializingBean {
 	
 	
 	// 
-	private static final String DEFAULT_DBMS = "MYSQL";
+	private static final String DEFAULT_DBMS = "ORACLE";
 	private Dialect dialect;
 	
 	// properties
@@ -145,12 +145,14 @@ public class PaginationPlugin implements Interceptor, InitializingBean {
 		MappedStatement ms = context.getMappedStatement();
 		Pagination pagination = context.getPagination();
 		
+		
 		BoundSql boundSql = ms.getBoundSql(pagination.getCriteria());
 		
 		// counting
-		Integer counting = new CountingExecutor(ms, dialect, boundSql).execute();
-        pagination.setTotalCount(counting);
-		
+		if(pagination.isNeedTotalCount()){
+			Integer counting = new CountingExecutor(ms, dialect, boundSql).execute();
+			pagination.setTotalCount(counting);
+		}
 		// paging
 		String pagingSql = dialect.getPagingSQL(boundSql.getSql().trim());
 		
@@ -198,7 +200,14 @@ public class PaginationPlugin implements Interceptor, InitializingBean {
 		}
 		
 		newBoundSql.setAdditionalParameter(OFFSET_PARAMETER, pg.getOffset());
-		newBoundSql.setAdditionalParameter(LIMIT_PARAMETER, pg.getLimit());
+		
+		// 如果是Oracle，第二个参数需要设置起始位置加Limit得到结束位置
+		// 与MySql是不一样
+		if(DBMS.ORACLE.name().equals(dbms)){
+			newBoundSql.setAdditionalParameter(LIMIT_PARAMETER, pg.getOffset() + pg.getLimit());
+		}else{
+			newBoundSql.setAdditionalParameter(LIMIT_PARAMETER, pg.getLimit());
+		}
 	}
 
 	

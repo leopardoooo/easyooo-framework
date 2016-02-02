@@ -3,6 +3,7 @@ package com.easyooo.framework.support.mybatis.util;
 import com.easyooo.framework.support.mybatis.DBMS;
 import com.easyooo.framework.support.mybatis.Dialect;
 import com.easyooo.framework.support.mybatis.impl.MySQLDialect;
+import com.easyooo.framework.support.mybatis.impl.OracleDialect;
 
 /**
  *
@@ -17,10 +18,14 @@ public class DialectUtil {
 		}catch(Exception e){
 			throw e;
 		}
-		if(dbms == DBMS.MYSQL){
+		switch (dbms) {
+		case MYSQL:
 			return new MySQLDialect();
+		case ORACLE:
+			return new OracleDialect();
+		default:
+			throw new UnsupportedOperationException("The database is not supported.");
 		}
-		throw new UnsupportedOperationException("The database is not supported.");
 	}
 	
 }

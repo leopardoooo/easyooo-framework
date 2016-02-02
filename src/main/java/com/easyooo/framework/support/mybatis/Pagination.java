@@ -20,6 +20,12 @@ public class Pagination {
 	private Integer totalCount;
 	private List<?> records;
 	
+	/**
+	 * 是否需要总行数，如果设置为true则触发1次count(1)的查询语句，
+	 * 如果为false,不触发，默认不触发适用于手机端的查询接口
+	 */
+	private boolean needTotalCount = false;
+	
 	public Pagination(){
 	}
 	
@@ -31,6 +37,11 @@ public class Pagination {
 		this(criteria);
 		this.limit = limit;
 		this.offset = offset;
+	}
+	
+	public Pagination(Object criteria, Integer offset, Integer limit, boolean needTotalCount){
+		this(criteria, offset, limit);
+		this.needTotalCount = needTotalCount;
 	}
 	
 	public Integer getLimit() {
@@ -70,4 +81,14 @@ public class Pagination {
 	public void setCriteria(Object criteria) {
 		this.criteria = criteria;
 	}
+
+	public boolean isNeedTotalCount() {
+		return needTotalCount;
+	}
+
+	public void setNeedTotalCount(boolean needTotalCount) {
+		this.needTotalCount = needTotalCount;
+	}
+	
+	
 }

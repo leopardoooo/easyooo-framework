@@ -6,7 +6,6 @@ package com.easyooo.framework.demo.domain;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 import com.easyooo.framework.cache.CacheLevel;
 import com.easyooo.framework.cache.annotations.Cache;
@@ -16,7 +15,6 @@ import com.easyooo.framework.cache.annotations.MiniTable;
 import com.easyooo.framework.sharding.ShardingStrategy;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Cache(level=CacheLevel.JVM_TO_REDIS)
 @lombok.ToString
 @MiniTable
